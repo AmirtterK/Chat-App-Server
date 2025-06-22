@@ -19,7 +19,7 @@ try {
 const PROJECT_ID = "chat-app-14e27";
 
 // Notification function
-async function sendNotification(fcmToken, title, body,data={}) {
+async function sendNotification(fcmToken, title, body,payload={}) {
   const auth = new GoogleAuth({
     credentials: serviceAccount,
     scopes: ["https://www.googleapis.com/auth/firebase.messaging"],
@@ -33,7 +33,7 @@ async function sendNotification(fcmToken, title, body,data={}) {
     message: {
       token: fcmToken,
       notification: { title, body },
-      data:data,
+      data:payload,
     },
   };
 
