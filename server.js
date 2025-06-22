@@ -19,7 +19,7 @@ try {
 const PROJECT_ID = "chat-app-14e27";
 
 // Notification function
-async function sendNotification(fcmToken, title, body) {
+async function sendNotification(fcmToken, title, body,data={}) {
   const auth = new GoogleAuth({
     credentials: serviceAccount,
     scopes: ["https://www.googleapis.com/auth/firebase.messaging"],
@@ -33,6 +33,7 @@ async function sendNotification(fcmToken, title, body) {
     message: {
       token: fcmToken,
       notification: { title, body },
+      data:data,
     },
   };
 
@@ -52,14 +53,14 @@ async function sendNotification(fcmToken, title, body) {
 
 // ✅ Endpoint Flutter can call
 app.post("/send", async (req, res) => {
-  const { token, title, body } = req.body;
+  const { token, title, body,data } = req.body;
 
   if (!token || !title || !body) {
     return res.status(400).json({ error: "Missing token, title, or body" });
   }
 
   try {
-    const result = await sendNotification(token, title, body);
+    const result = await sendNotification(token, title, body,data);
     res.status(200).json({ success: true, fcm: result });
   } catch (error) {
     console.error("❌ FCM error:", error.message);
