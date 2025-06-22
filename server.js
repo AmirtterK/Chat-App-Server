@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require("express");
-const fetch = (...args) => import("node-fetch").then(({ default: fetch }) => fetch(...args));
+const fetch = (...args) =>
+  import("node-fetch").then(({ default: fetch }) => fetch(...args));
 const { GoogleAuth } = require("google-auth-library");
 
 const app = express();
@@ -19,7 +20,7 @@ try {
 const PROJECT_ID = "chat-app-14e27";
 
 // Notification function
-async function sendNotification(fcmToken, title, body,payload={}) {
+async function sendNotification(fcmToken, title, body, payload = {}) {
   const auth = new GoogleAuth({
     credentials: serviceAccount,
     scopes: ["https://www.googleapis.com/auth/firebase.messaging"],
@@ -33,7 +34,7 @@ async function sendNotification(fcmToken, title, body,payload={}) {
     message: {
       token: fcmToken,
       notification: { title, body },
-      data:payload,
+      data: payload,
     },
   };
 
@@ -53,14 +54,14 @@ async function sendNotification(fcmToken, title, body,payload={}) {
 
 // ✅ Endpoint Flutter can call
 app.post("/send", async (req, res) => {
-  const { token, title, body,data } = req.body;
+  const { token, title, body, payload } = req.body;
 
   if (!token || !title || !body) {
     return res.status(400).json({ error: "Missing token, title, or body" });
   }
 
   try {
-    const result = await sendNotification(token, title, body,data);
+    const result = await sendNotification(token, title, body, payload);
     res.status(200).json({ success: true, fcm: result });
   } catch (error) {
     console.error("❌ FCM error:", error.message);
