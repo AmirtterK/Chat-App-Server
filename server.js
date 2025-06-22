@@ -1,8 +1,14 @@
 // Using built-in fetch (Node.js 18+)
 const { GoogleAuth } = require("google-auth-library");
-const serviceAccount = require("./serviceAccountKey.json");
-
-// TODO: Replace with your actual project ID
+require("dotenv").config();
+// const serviceAccount = require("./serviceAccountKey.json");
+let serviceAccount;
+try {
+  serviceAccount = JSON.parse(process.env.SERVICE_ACCOUNT_KEY);
+} catch (e) {
+  console.error("❌ Invalid SERVICE_ACCOUNT_KEY:", e.message);
+  process.exit(1);
+}// TODO: Replace with your actual project ID
 const PROJECT_ID = "chat-app-14e27";
 
 // Target device's FCM token
