@@ -5,9 +5,8 @@ const fetch = (...args) =>
 const { GoogleAuth } = require("google-auth-library");
 
 const app = express();
-app.use(express.json()); // allows JSON body parsing
+app.use(express.json()); 
 
-// Parse service account from environment
 let serviceAccount;
 try {
   serviceAccount = JSON.parse(process.env.SERVICE_ACCOUNT_KEY);
@@ -52,7 +51,6 @@ async function sendNotification(fcmToken, title, body, payload = {}) {
   return data;
 }
 
-// ✅ Endpoint Flutter can call
 app.post("/send", async (req, res) => {
   const { token, title, body, payload } = req.body;
 
@@ -72,5 +70,5 @@ app.post("/send", async (req, res) => {
 // Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`🚀 FCM server listening on port ${PORT}`);
+  console.log(`FCM server listening on port ${PORT}`);
 });
