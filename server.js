@@ -62,7 +62,7 @@ app.post("/send", async (req, res) => {
     const result = await sendNotification(token, title, body, payload);
     res.status(200).json({ success: true, fcm: result });
   } catch (error) {
-    console.error("❌ FCM error:", error.message);
+    console.error("FCM error:", error.message);
     res.status(500).json({ success: false, error: error.message });
   }
 });
